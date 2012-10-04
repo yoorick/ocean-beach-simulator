@@ -6,9 +6,12 @@
 	<link rel="stylesheet" type="text/css" href="graphics.css" />
 	<script type="text/javascript" src="graphics.js"></script>
 </head>
-<body onload="init();">
+<body onload="init('view');">
 	<div>
 		<canvas id="view" width="640" height="480" >Browser does not support &lt;canvas&gt; element.</canvas>
 	</div>
+	<p>
+		<input type="button" name="draw" value="Рисовать" onclick="draw()" />
+	</p>
 </body>
 </html>
