@@ -165,18 +165,21 @@ function Model()
 	this.yAngleRad = this.yAngle * Math.PI / 180;
 	// TODO: угол наклона (поворота вокруг оси OX')
 
+	var C = Math.cos(this.yAngleRad);
+	var S = Math.sin(this.yAngleRad);
+
 	this.directTransformMatrix = [
-		[ Math.cos(this.yAngleRad), 0,  Math.sin(this.yAngleRad),  0             ],
-		[ 0,                        1,  0,                         this.height   ],
-		[-Math.sin(this.yAngleRad), 0,  Math.cos(this.yAngleRad), -this.distance ],
-		[ 0,                        0,  0,                         1             ]
+		[ C,  0,  S,  0             ],
+		[ 0,  1,  0,  this.height   ],
+		[-S,  0,  C, -this.distance ],
+		[ 0,  0,  0,  1             ]
 	];
 
 	this.reverseTransformMatrix = [
-		[ Math.cos(this.yAngleRad), 0, -Math.sin(this.yAngleRad), -Math.sin(this.yAngleRad) * this.distance ],
-		[ 0,                        1,  0,                        -this.height                              ],
-		[ Math.sin(this.yAngleRad), 0,  Math.cos(this.yAngleRad),  Math.cos(this.yAngleRad) * this.distance ],
-		[ 0,                        0,  0,                         1                                        ]
+		[ C,  0, -S, -S * this.distance ],
+		[ 0,  1,  0, -this.height       ],
+		[ S,  0,  C,  C * this.distance ],
+		[ 0,  0,  0,  1                 ]
 	];
 
 	this.focusTr = this.focus.transform(this.directTransformMatrix);
