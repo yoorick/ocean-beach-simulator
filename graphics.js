@@ -37,6 +37,22 @@ function init(canvasID)
 }
 
 
+function loadDefaultSettings()
+{
+	if (!defaultSettings)
+	{
+		alert('Error: настройки по умолчанию не найдены!');
+		return;
+	}
+
+	document.getElementById('scale').value = defaultSettings.scale;
+	document.getElementById('focusAngle').value = defaultSettings.focusAngle;
+	document.getElementById('distance').value = defaultSettings.distance;
+	document.getElementById('height').value = defaultSettings.height;
+	document.getElementById('yAngle').value = defaultSettings.yAngle;
+}
+
+
 /**
  * Пиксель.
  *
@@ -125,9 +141,9 @@ function Model()
 	// Увеличение (наверное не нужно пока)
 	this.zoom = 1.0;
 	// Сколько пикселов в одном метре виртуального пространства:
-	this.scale = 1000;
+	this.scale = parseInt(document.getElementById('scale').value);
 	// Угол обзора (в градусах)
-	this.focusAngle = 62;
+	this.focusAngle = parseInt(document.getElementById('focusAngle').value);
 	// Угол обзора (в радианах)
 	this.focusAngleRad = this.focusAngle * Math.PI / 180;
 	this.focus = new Point(
@@ -139,12 +155,12 @@ function Model()
 	// Расстояние от штатива до воды (в метрах виртуального пространства)
 	// т.е. сдвиг OX'Y'Z' относительно OXYZ вдоль оси OZ
 	// Отрицательное значение означает, что мы над водой
-	this.distance = 0.05;
+	this.distance = parseFloat(document.getElementById('distance').value);
 	// Высота до центра холста (в метрах виртуального пространства)
 	// т.е. сдвиг OX'Y'Z' относительно OXYZ вдоль оси OY
-	this.height = 1.5;
+	this.height = parseFloat(document.getElementById('height').value);
 	// Поворот экрана вокруг вертикальной оси OY' (в градусах)
-	this.yAngle = 0;
+	this.yAngle = parseInt(document.getElementById('yAngle').value);
 	// Поворот экрана вокруг вертикальной оси OY' (в радианах)
 	this.yAngleRad = this.yAngle * Math.PI / 180;
 	// TODO: угол наклона (поворота вокруг оси OX')

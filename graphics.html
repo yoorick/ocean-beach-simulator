@@ -4,14 +4,22 @@
 	<title>Computer Graphics</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel="stylesheet" type="text/css" href="graphics.css" />
+	<script type="text/javascript" src="defaults.js"></script>
 	<script type="text/javascript" src="graphics.js"></script>
 </head>
-<body onload="init('view');">
+<body onload="init('view'); loadDefaultSettings();">
 	<div>
 		<canvas id="view" width="640" height="480" >Browser does not support &lt;canvas&gt; element.</canvas>
 	</div>
 	<p>
 		<input type="button" name="draw" value="Рисовать" onclick="draw()" />
 	</p>
+	<div>
+		<label><input type="text" id="scale" /> Пикселов в метре.</label><br />
+		<label><input type="text" id="focusAngle" /> Угол обзора (в градусах).</label><br />
+		<label><input type="text" id="distance" /> Расстояние до моря (в метрах).</label><br />
+		<label><input type="text" id="height" /> Высота наблюдателя (в метрах).</label><br />
+		<label><input type="text" id="yAngle" /> Поворот (в градусах).</label>
+	</div>
 </body>
 </html>
