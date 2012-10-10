@@ -176,8 +176,8 @@ function draw()
 	var model = new Model();
 
 	// Узнаем размеры холста
-	var width = model.width;
-	var height = model.height;
+	var width = model.viewportWidth;
+	var height = model.viewportHeight;
 
 	// Получаем массив пикселей холста
 	var imgd = context.createImageData(width, height);
