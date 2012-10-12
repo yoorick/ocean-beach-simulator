@@ -233,8 +233,6 @@ function setPixelColor(pixel, model)
 	var vpPoint = pixel.toPoint(model);
 	var vpPointTr = vpPoint.transform(model.directTransformMatrix);
 
-	var drawingObject = 'sky';
-	var intersection = null;
 	// Не уходит ли луч в линию горизонта (параллельно плоскости земли)?
 	if (Math.abs(vpPointTr.y - model.focusTr.y) > 0.00001)
 	{
@@ -249,7 +247,7 @@ function setPixelColor(pixel, model)
 		var t = -(fy / ey);
 
 		// Точка пересечения в координатах 0"X"Y"Z"
-		intersection = new Point(
+		var intersection = new Point(
 			model.focusTr.x + t * (vpPointTr.x - model.focusTr.x),
 			0,
 			model.focusTr.z + t * (vpPointTr.z - model.focusTr.z)
@@ -262,31 +260,60 @@ function setPixelColor(pixel, model)
 		{
 			if (intersection.z >= 0)
 			{
-				drawingObject = 'water';
+				setWaterColor(pixel, model, intersection);
+				return;
 			}
 			else
 			{
-				drawingObject = 'sand';
+				setSandColor(pixel, model);
+				return;
 			}
 		}
 	}
 
-	switch (drawingObject) {
-		case 'sky':
-			pixel.red = 200;
-			pixel.green = 200;
-			pixel.blue = 220;
-			break;
-		case 'sand':
-			pixel.red = 240;
-			pixel.green = 240;
-			pixel.blue = 100;
-			break;
-		case 'water':
-			pixel.red = 100;
-			pixel.green = 100;
-			pixel.blue = 250;
-			break;
-	}
+	setSkyColor(pixel, model);
+}
+
+
+/**
+ * Закрасить небо.
+ *
+ * @property {Pixel} pixel
+ * @property {Model} model
+ */
+function setSkyColor(pixel, model)
+{
+	pixel.red = 200;
+	pixel.green = 200;
+	pixel.blue = 220;
+}
+
+
+/**
+ * Закрасить песок.
+ *
+ * @property {Pixel} pixel
+ * @property {Model} model
+ */
+function setSandColor(pixel, model)
+{
+	pixel.red = 240;
+	pixel.green = 240;
+	pixel.blue = 100;
+}
+
+
+/**
+ * Закрасить воду.
+ *
+ * @property {Pixel} pixel
+ * @property {Model} model
+ * @property {Point} intersect
+ */
+function setWaterColor(pixel, model, intersect)
+{
+	pixel.red = 100;
+	pixel.green = 100;
+	pixel.blue = 250;
 }
 
