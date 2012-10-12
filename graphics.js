@@ -226,7 +226,7 @@ function draw()
  * Вычислить цвет пикселя.
  *
  * @property {Pixel} pixel
- * @property {Object} model
+ * @property {Model} model
  */
 function setPixelColor(pixel, model)
 {
@@ -238,18 +238,26 @@ function setPixelColor(pixel, model)
 	// Не уходит ли луч в линию горизонта (параллельно плоскости земли)?
 	if (Math.abs(vpPointTr.y - model.focusTr.y) > 0.00001)
 	{
-		// TODO: алгоритм определения точки пересечения работает неправильно.
+		// f + e*t  (t >=0 )  - луч
+		// fy + ey*t          - проекция луча на ось OY
+		// fy + ey*t = 0      - условие пересечения луча с поверхностью.
+		// t = - (fy / ey)
+		// e = vp - f         - как получить вектор e
+
+		var ey = vpPointTr.y - model.focusTr.y;
+		var fy = model.focusTr.y;
+		var t = -(fy / ey);
+
+		// Точка пересечения в координатах 0"X"Y"Z"
 		intersection = new Point(
-			vpPointTr.x - vpPointTr.y * (model.focusTr.x - vpPointTr.x) * (model.focusTr.y - vpPointTr.y),
+			model.focusTr.x + t * (vpPointTr.x - model.focusTr.x),
 			0,
-			vpPointTr.z - vpPointTr.y * (model.focusTr.z - vpPointTr.z) * (model.focusTr.y - vpPointTr.y)
+			model.focusTr.z + t * (vpPointTr.z - model.focusTr.z)
 		);
+
+		// Точка пересечения в координатах 0'X'Y'Z'
 		var intersectionRev = intersection.transform(model.reverseTransformMatrix);
-//alert(
-//	'pixel: [' + pixel.x + ', ' + pixel.y + ']\n' +
-//	'inter:    [' + intersection.x + ', ' + intersection.y + ', ' + intersection.z + ']\n' +
-//	'inter_rev: [' + intersectionRev.x + ', ' + intersectionRev.y + ', ' + intersectionRev.z + ']'
-//);
+
 		if (intersectionRev.z > 0)
 		{
 			if (intersection.z >= 0)
