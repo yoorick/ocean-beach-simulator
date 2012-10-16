@@ -50,6 +50,8 @@ function loadDefaultSettings()
 	document.getElementById('distance').value = defaultSettings.distance;
 	document.getElementById('height').value = defaultSettings.height;
 	document.getElementById('yAngle').value = defaultSettings.yAngle;
+	document.getElementById('waveLength').value = defaultSettings.waveLength;
+	document.getElementById('waveHeight').value = defaultSettings.waveHeight;
 }
 
 
@@ -183,6 +185,12 @@ function Model()
 	];
 
 	this.focusTr = this.focus.transform(this.directTransformMatrix);
+
+	this.waveLength = parseFloat(document.getElementById('waveLength').value);
+	this.waveHeight = parseFloat(document.getElementById('waveHeight').value);
+
+	// Коэффициент для волнового уравнения
+	this.waveLengthCoef = 2 * Math.PI / this.waveLength;
 }
 
 
@@ -312,8 +320,16 @@ function setSandColor(pixel, model)
  */
 function setWaterColor(pixel, model, intersect)
 {
-	pixel.red = 100;
-	pixel.green = 100;
-	pixel.blue = 250;
+	// Расстояние от наблюдателя до точки пересечения
+	var radius = Math.sqrt(Math.pow((intersect.x - model.focusTr.x), 2) + Math.pow((intersect.z - model.focusTr.z), 2));
+	// amp должен быть <= 1.0
+	// TODO: Число 10 подобрано экспериментально, возможно его можно как-то еще параметризовать.
+	var amp = (radius > 10 ? 10 / radius : 1) * model.waveHeight;
+	// Коэффициент с которым накладывается маска на основной цвет
+	var coef = amp * Math.cos(model.waveLengthCoef * intersect.z);
+
+	pixel.red = 50 + 50 * coef;
+	pixel.green = 50 + 50 * coef;
+	pixel.blue = 180  + 70 * coef;
 }
 
