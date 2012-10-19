@@ -223,12 +223,16 @@ function draw()
 	var imgd = context.createImageData(width, height);
 
 	var offset = 0;
+	var pixel = new Pixel(0, 0);
+
 	for (var y = 0; y < height; ++y)
 	{
+		pixel.y = y;
+
 		for (var x = 0; x < width; ++x, offset += 4)
 		{
 //			offset = (y * width + x) * 4;
-			var pixel = new Pixel(x, y);
+			pixel.x = x;
 
 			setPixelColor(pixel, model);
 
