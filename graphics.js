@@ -219,16 +219,17 @@ function draw()
 	// Получаем массив пикселей холста
 	var imgd = context.createImageData(width, height);
 
+	var offset = 0;
 	for (var y = 0; y < height; ++y)
 	{
-		for (var x = 0; x < width; ++x)
+		for (var x = 0; x < width; ++x, offset += 4)
 		{
-			var offset = (y * width + x) * 4;
+//			offset = (y * width + x) * 4;
 			var pixel = new Pixel(x, y);
 
 			setPixelColor(pixel, model);
 
-			imgd.data[offset + 0] = pixel.red;		// Red
+			imgd.data[offset    ] = pixel.red;		// Red
 			imgd.data[offset + 1] = pixel.green;    // Green
 			imgd.data[offset + 2] = pixel.blue;     // Blue
 			imgd.data[offset + 3] = pixel.alpha;    // Alpha
