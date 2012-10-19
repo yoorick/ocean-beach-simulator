@@ -92,9 +92,9 @@ function Pixel(x, y)
 Pixel.prototype.toPoint = function (model)
 {
 	return new Point(
-		(this.x - model.viewportWidth / 2)  / model.scale,  // X'
-		(model.viewportHeight / 2 - this.y) / model.scale,  // Y'
-		0                                                   // Z'
+		(this.x - model.viewportWidthHalf)  * model.scaleFraс,  // X'
+		(model.viewportHeightHalf - this.y) * model.scaleFraс,  // Y'
+		0                                                       // Z'
 	);
 }
 
@@ -148,12 +148,15 @@ function Model()
 	this.screen = new Object();
 
 	this.viewportWidth = canvas.width;
+	this.viewportWidthHalf = this.viewportWidth * 0.5;
 	this.viewportHeight = canvas.height;
+	this.viewportHeightHalf = this.viewportHeight * 0.5;
 
 	// Увеличение (наверное не нужно пока)
 	this.zoom = 1.0;
 	// Сколько пикселов в одном метре виртуального пространства:
 	this.scale = parseInt(document.getElementById('scale').value);
+	this.scaleFraс = 1 / this.scale;
 	// Угол обзора (в градусах)
 	this.focusAngle = parseInt(document.getElementById('focusAngle').value);
 	// Угол обзора (в радианах)
