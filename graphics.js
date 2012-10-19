@@ -80,22 +80,28 @@ function Pixel(x, y)
 	this.green = 0;
 	this.blue = 0;
 	this.alpha = 255;
-
-	/**
-	 * @param {Model} model
-	 */
-	this.toPoint = function (model)
-	{
-		return new Point(
-			(this.x - model.viewportWidth / 2)  / model.scale,  // X'
-			(model.viewportHeight / 2 - this.y) / model.scale,  // Y'
-			0                                                   // Z'
-		);
-	}
 }
 
 
 /**
+ * Конвертировать пискель в точку в виртуальном пространестве.
+ * Координаты новой точки принадлежат системе O'X'Y'Z'
+ *
+ * @param {Model} model
+ */
+Pixel.prototype.toPoint = function (model)
+{
+	return new Point(
+		(this.x - model.viewportWidth / 2)  / model.scale,  // X'
+		(model.viewportHeight / 2 - this.y) / model.scale,  // Y'
+		0                                                   // Z'
+	);
+}
+
+
+/**
+ * Точка.
+ *
  * @constructor
  * @this {Point}
  *
@@ -112,18 +118,22 @@ function Point(x, y, z)
 	this.x = x;
 	this.y = y;
 	this.z = z;
+}
 
-	/**
-	 * @param {Array} matrix
-	 */
-	this.transform = function (matrix)
-	{
-		return new Point(
-			matrix[0][0] * this.x + matrix[0][1] * this.y + matrix[0][2] * this.z + matrix[0][3],
-			matrix[1][0] * this.x + matrix[1][1] * this.y + matrix[1][2] * this.z + matrix[1][3],
-			matrix[2][0] * this.x + matrix[2][1] * this.y + matrix[2][2] * this.z + matrix[2][3]
-		);
-	}
+
+/**
+ * Преобразовать координаты точки из одной системы координат в другую,
+ * с использованием матрицы преобразования.
+ *
+ * @param {Array} matrix
+ */
+Point.prototype.transform = function (matrix)
+{
+	return new Point(
+		matrix[0][0] * this.x + matrix[0][1] * this.y + matrix[0][2] * this.z + matrix[0][3],
+		matrix[1][0] * this.x + matrix[1][1] * this.y + matrix[1][2] * this.z + matrix[1][3],
+		matrix[2][0] * this.x + matrix[2][1] * this.y + matrix[2][2] * this.z + matrix[2][3]
+	);
 }
 
 
