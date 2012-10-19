@@ -252,18 +252,19 @@ function setPixelColor(pixel, model)
 	var vpPoint = pixel.toPoint(model);
 	var vpPointTr = vpPoint.transform(model.directTransformMatrix);
 
-	// Не уходит ли луч в линию горизонта (параллельно плоскости земли)?
-	if (Math.abs(vpPointTr.y - model.focusTr.y) > 0.00001)
-	{
-		// f + e*t  (t >=0 )  - луч
-		// fy + ey*t          - проекция луча на ось OY
-		// fy + ey*t = 0      - условие пересечения луча с поверхностью.
-		// t = - (fy / ey)
-		// e = vp - f         - как получить вектор e
+	// f + e*t  (t >=0 )  - луч
+	// fy + ey*t          - проекция луча на ось OY
+	// fy + ey*t = 0      - условие пересечения луча с поверхностью.
+	// t = - (fy / ey)
+	// e = vp - f         - как получить вектор e
 
-		var ey = vpPointTr.y - model.focusTr.y;
-		var fy = model.focusTr.y;
-		var t = -(fy / ey);
+	var ey = model.focusTr.y - vpPointTr.y;
+
+	// Не уходит ли луч в линию горизонта (параллельно плоскости земли)?
+	if (ey > 0.00001 || ey < -0.00001)
+	{
+//		var fy = model.focusTr.y;
+		var t = model.focusTr.y / ey;
 
 		// Точка пересечения в координатах 0"X"Y"Z"
 		var intersection = new Point(
