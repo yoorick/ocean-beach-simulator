@@ -273,6 +273,15 @@ function draw()
  */
 function setPixelColor(pixel, model)
 {
+	// TODO: Этот хак не совместим с возможностью "наклона головы" вниз/вверх,
+	// но значительно увеличивает производительность и совместим с текущей моделью.
+	// В случае с "наклоном головы" можно проверять условие (ey < 0).
+	if (pixel.y < model.viewportHeightHalf)
+	{
+		setSkyColor(pixel, model);
+		return;
+	}
+
 	var vpPoint = pixel.toPoint(model);
 	var vpPointTr = vpPoint.transform(model.directTransformMatrix);
 
