@@ -326,7 +326,7 @@ function setWaterColor(pixel, model, intersect)
 	// TODO: Число 10 подобрано экспериментально, возможно его можно как-то еще параметризовать.
 	var amp = (radius > 10 ? 10 / radius : 1) * model.waveHeight;
 	// Коэффициент с которым накладывается маска на основной цвет
-	var coef = amp * Math.cos(model.waveLengthCoef * intersect.z);
+	var coef = amp * Math.sin(model.waveLengthCoef * intersect.z);
 
 	pixel.red = 50 + 50 * coef;
 	pixel.green = 50 + 50 * coef;
