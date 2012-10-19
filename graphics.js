@@ -138,6 +138,23 @@ Point.prototype.transform = function (matrix)
 
 
 /**
+ * Преобразовать координаты точки из одной системы координат в другую,
+ * с использованием матрицы преобразования,
+ * но отбросить координаты X и Y, вернув точку (0, 0, Z).
+ *
+ * @param {Array} matrix
+ */
+Point.prototype.transformOnlyZ = function (matrix)
+{
+	return new Point(
+		0,
+		0,
+		matrix[2][0] * this.x + matrix[2][1] * this.y + matrix[2][2] * this.z + matrix[2][3]
+	);
+}
+
+
+/**
  * Модель
  *
  * @constructor
@@ -281,7 +298,7 @@ function setPixelColor(pixel, model)
 		);
 
 		// Точка пересечения в координатах 0'X'Y'Z'
-		var intersectionRev = intersection.transform(model.reverseTransformMatrix);
+		var intersectionRev = intersection.transformOnlyZ(model.reverseTransformMatrix);
 
 		if (intersectionRev.z > 0)
 		{
